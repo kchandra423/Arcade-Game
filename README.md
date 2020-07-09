@@ -1,3 +1,3 @@
 # Arcade-Game-Server
 
-initial commit
+so basically im mongy
