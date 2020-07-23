@@ -6,5 +6,11 @@
     an object containing all of the the aspects of the map(including the player)
 
  */
-public class ClientHandler {
+public class ClientHandler 
+{
+	public ClientHandler()
+	{
+		
+	}
+	
 }
