@@ -1,3 +1,4 @@
+//servers send server packets, clients send client packets
 import java.io.Serializable;
 import java.util.ArrayList;
 

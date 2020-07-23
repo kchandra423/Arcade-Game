@@ -1,3 +1,5 @@
+import java.net.DatagramPacket;
+
 /**should recieve:
     array list of buttons pressed consisting of (w,a,s,d,up,down,left,right,)
     mouse location
@@ -12,5 +14,11 @@ public class ClientHandler
 	{
 		
 	}
-	
+
+	public void receivePacket(DatagramPacket packet){
+
+	}
+	public DatagramPacket currentPacket(){
+		return null;
+	}
 }
