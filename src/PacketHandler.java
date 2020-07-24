@@ -1,20 +1,24 @@
+import sun.rmi.runtime.Log;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
+import java.net.*;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class PacketHandler {
     private HashMap<InetAddress, ClientHandler> addressBook;
+//    private LinkedList<InetAddress> phonebook;
     private DatagramSocket socket;
     private final int PORT_NUMBER=25565;
     public PacketHandler(){
-            addressBook=new HashMap();
+            addressBook= new HashMap<>();
         try {
             socket=new DatagramSocket(PORT_NUMBER);
         } catch (SocketException e) {
-            System.out.println("Something went wrong when initializing the socket");
+            LogHandler.write("Something went wrong when initializing the socket");
             e.printStackTrace();
         }
 
@@ -48,6 +52,7 @@ public class PacketHandler {
 
 
                         } catch (IOException e) {
+                            LogHandler.write("Something went wrong receiving information");
                             e.printStackTrace();
                         }
 
@@ -58,12 +63,39 @@ public class PacketHandler {
             }).start();
 
         }
+        private void startSending(){
+
+            new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+                    Timer timer= new Timer(1000 / 60, new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+
+                            for(int i=0; i<addressBook.size();i++){
+                                InetAddress currentAddress = (InetAddress) addressBook.keySet().toArray()[i];
+                                DatagramPacket data= addressBook.get(currentAddress).getPacket();
+
+                                sendPacket(data);
+
+
+                            }
+
+                        }
+                    });
+                    timer.start();
+                }
+
+            }).start();
+        }
         private void sendPacket(DatagramPacket packet){
 
 
             try {
                 socket.send(packet);
             } catch (IOException e) {
+                LogHandler.write("Something went wrong sending a packet");
                 e.printStackTrace();
             }
 
@@ -74,6 +106,18 @@ public class PacketHandler {
         byte[] buffer = new byte[8192];
 
         return new DatagramPacket(buffer, buffer.length);
+
+    }
+    private static DatagramPacket getPacket(ClientPacket packet) {
+
+
+        byte[] data = serializeObject(packet);
+
+        try {
+            return new DatagramPacket(data, data.length, InetAddress.getByName(address), port);
+        } catch (UnknownHostException e) {
+            return null;
+        }
 
     }
     private static byte[] serializeObject(Object o) {

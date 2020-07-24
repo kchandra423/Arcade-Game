@@ -10,15 +10,17 @@ import java.net.DatagramPacket;
  */
 public class ClientHandler 
 {
+
+	DatagramPacket packet;// = new DatagramPacket();
 	public ClientHandler()
 	{
-		
+		packet=new DatagramPacket()
 	}
 
 	public void receivePacket(DatagramPacket packet){
 
 	}
-	public DatagramPacket currentPacket(){
+	public DatagramPacket getPacket(){
 		return null;
 	}
 }
