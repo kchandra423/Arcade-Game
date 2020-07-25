@@ -1,6 +1,5 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.DatagramPacket;
 
 import javax.swing.Timer;
 
@@ -35,25 +34,25 @@ public class ClientHandler {
 				
 				String[] parsedKeyCode = keyCode.split(";");
 				
-				if (parsedKeyCode[0].equals("true")) {
+				if (parsedKeyCode[0].equals("true")) { // w
 					
 					
 					
 				}
 				
-				if (parsedKeyCode[1].equals("true")) {
+				if (parsedKeyCode[1].equals("true")) { // a
 					
 					
 					
 				}
 				
-				if (parsedKeyCode[2].equals("true")) {
+				if (parsedKeyCode[2].equals("true")) { // s
 					
 					
 					
 				}
 				
-				if (parsedKeyCode[3].equals("true")) {
+				if (parsedKeyCode[3].equals("true")) { // d
 					
 					
 					
