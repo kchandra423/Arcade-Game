@@ -1,4 +1,8 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.net.DatagramPacket;
+
+import javax.swing.Timer;
 
 /**should recieve:
     array list of buttons pressed consisting of (w,a,s,d,up,down,left,right,)
@@ -8,19 +12,83 @@ import java.net.DatagramPacket;
     an object containing all of the the aspects of the map(including the player)
 
  */
-public class ClientHandler 
-{
+public class ClientHandler {
 
-	DatagramPacket packet;// = new DatagramPacket();
-	public ClientHandler()
-	{
-		packet=new DatagramPacket()
+	private final ClientKey CLIENT;
+	
+	private String keyCode = "false;false;false;false"; // w;a;s;d
+	
+	private final String FALSECODE = "false;false;false;false";
+	
+	private Player player;
+	
+	private Timer move = new Timer(1000/60, new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			if (keyCode.equals(FALSECODE)) {
+				
+				move.stop();
+				
+			} else {
+				
+				String[] parsedKeyCode = keyCode.split(";");
+				
+				if (parsedKeyCode[0].equals("true")) {
+					
+					
+					
+				}
+				
+				if (parsedKeyCode[1].equals("true")) {
+					
+					
+					
+				}
+				
+				if (parsedKeyCode[2].equals("true")) {
+					
+					
+					
+				}
+				
+				if (parsedKeyCode[3].equals("true")) {
+					
+					
+					
+				}
+				
+			}
+			
+		}
+		
+	});
+
+	
+	public ClientHandler(ClientKey key) {
+		
+		CLIENT = key;
+		
+		player = genPlayer();
+		
 	}
 
-	public void receivePacket(DatagramPacket packet){
-
+	public void loadPacket(ClientPacket packet) {
+		
+		keyCode = packet.getKeyCode();
+		
+		if (!move.isRunning()) {
+			move.start();
+		}
+		
 	}
-	public DatagramPacket getPacket(){
+	
+	// Should generate a player in a valid position (
+	private Player genPlayer() {
+		
 		return null;
+		
 	}
+	
 }

@@ -1,40 +1,48 @@
-//servers send server packets, clients send client packets
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class ServerPacket implements Serializable {
 	
-	private Map gameMap;
+	private final Map GAMEMAP;
 	
-	private ArrayList<Player> players;
+	private final ArrayList<Player> PLAYERS;
 	
-	private Player mainPlayer;
+	private final Player MAINPLAYER;
+	
+	private final int PACKETNUM;
 
 	private static final long serialVersionUID = 9108779363102530646L;
 	
-	public ServerPacket(Map theMap, ArrayList<Player> allOtherPlayers, Player mainPlayer) {
+	public ServerPacket(Map theMap, ArrayList<Player> allOtherPlayers, Player mainPlayer, int packetNumber) {
 		
-		this.mainPlayer = mainPlayer;
-		players = allOtherPlayers;
-		gameMap = theMap;
+		this.MAINPLAYER = mainPlayer;
+		PLAYERS = allOtherPlayers;
+		GAMEMAP = theMap;
+		PACKETNUM = packetNumber;
 		
 	}
 	
 	public Map getMap() {
 		
-		return gameMap;
+		return GAMEMAP;
 		
 	}
 	
 	public Player getMainPlayer() {
 		
-		return mainPlayer;
+		return MAINPLAYER;
 		
 	}
 	
 	public ArrayList<Player> getAllOtherPlayers(){
 		
-		return players;
+		return PLAYERS;
+		
+	}
+	
+	public int getPacketNumber() {
+		
+		return PACKETNUM;
 		
 	}
 

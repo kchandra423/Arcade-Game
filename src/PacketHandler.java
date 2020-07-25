@@ -1,5 +1,3 @@
-import sun.rmi.runtime.Log;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,187 +7,189 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 public class PacketHandler {
-    private HashMap<InetAddress, ClientHandler> addressBook;
+	private HashMap<ClientKey, ClientHandler> addressBook;
 //    private LinkedList<InetAddress> phonebook;
-    private DatagramSocket socket;
-    private final int PORT_NUMBER=25565;
-    public PacketHandler(){
-            addressBook= new HashMap<>();
-        try {
-            socket=new DatagramSocket(PORT_NUMBER);
-        } catch (SocketException e) {
-            LogHandler.write("Something went wrong when initializing the socket");
-            e.printStackTrace();
-        }
+	private DatagramSocket socket;
+	private final int PORT_NUMBER = 25565;
 
-    }
-    private void startReceiving(){
+	public PacketHandler() {
+		addressBook = new HashMap<>();
+		try {
+			socket = new DatagramSocket(PORT_NUMBER);
+		} catch (SocketException e) {
+			LogHandler.write("Something went wrong when initializing the socket");
+			e.printStackTrace();
+		}
 
+	}
 
-            new Thread(new Runnable() {
+	private void startReceiving() {
 
-                @Override
-                public void run() {
+		new Thread(new Runnable() {
 
-                    while (true) {
+			@Override
+			public void run() {
 
-                        DatagramPacket receive = getPacket();
+				while (true) {
 
-                        try {
+					DatagramPacket receive = getPacket();
 
-                            socket.receive(receive);
-                            InetAddress address = receive.getAddress();
-                            if(!addressBook.containsKey(address)){
-                                ClientHandler handler= new ClientHandler();
-                                addressBook.put(address,handler);
+					try {
 
-                            }
-//                            ClientPacket packet = (ClientPacket) deserializeBytes(receive.getData());
-                            addressBook.get(address).receivePacket(receive);
+						socket.receive(receive);
+						InetAddress address = receive.getAddress();
 
+						ClientKey key = new ClientKey(address, receive.getPort());
 
+						if (!addressBook.containsKey(key)) {
 
+							ClientHandler handler = new ClientHandler(key);
+							addressBook.put(key, handler);
 
+						}
+						
+						ClientPacket packet = (ClientPacket) deserializeBytes(receive.getData());
+						
+						addressBook.get(key).loadPacket(packet);
 
-                        } catch (IOException e) {
-                            LogHandler.write("Something went wrong receiving information");
-                            e.printStackTrace();
-                        }
+					} catch (IOException e) {
+						LogHandler.write("Something went wrong receiving information");
+						e.printStackTrace();
+					}
 
-                    }
+				}
 
-                }
+			}
 
-            }).start();
+		}).start();
 
-        }
-        private void startSending(){
+	}
 
-            new Thread(new Runnable() {
+//	private void startSending() {
+//
+//		new Thread(new Runnable() {
+//
+//			@Override
+//			public void run() {
+//				Timer timer = new Timer(1000 / 60, new ActionListener() {
+//					@Override
+//					public void actionPerformed(ActionEvent e) {
+//
+//						ClientKey[] addressArray = (ClientKey[]) addressBook.keySet().toArray();
+//
+//						for (int i = 0; i < addressBook.size(); i++) {
+//
+//							DatagramPacket data = addressBook.get(addressArray[i]).getPacket();
+//
+//							sendPacket(data);
+//
+//						}
+//
+//					}
+//				});
+//				timer.start();
+//			}
+//
+//		}).start();
+//	}
 
-                @Override
-                public void run() {
-                    Timer timer= new Timer(1000 / 60, new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
+	private void sendPacket(DatagramPacket packet) {
 
-                            for(int i=0; i<addressBook.size();i++){
-                                InetAddress currentAddress = (InetAddress) addressBook.keySet().toArray()[i];
-                                DatagramPacket data= addressBook.get(currentAddress).getPacket();
+		try {
+			socket.send(packet);
+		} catch (IOException e) {
+			LogHandler.write("Something went wrong sending a packet");
+			e.printStackTrace();
+		}
 
-                                sendPacket(data);
+	}
 
+	private static DatagramPacket getPacket() {
 
-                            }
+		byte[] buffer = new byte[8192];
 
-                        }
-                    });
-                    timer.start();
-                }
+		return new DatagramPacket(buffer, buffer.length);
 
-            }).start();
-        }
-        private void sendPacket(DatagramPacket packet){
+	}
 
+	private static DatagramPacket getPacket(ClientPacket packet, InetAddress clientAddress, int clientPort) {
 
-            try {
-                socket.send(packet);
-            } catch (IOException e) {
-                LogHandler.write("Something went wrong sending a packet");
-                e.printStackTrace();
-            }
+		byte[] data = serializeObject(packet);
 
-        }
+		return new DatagramPacket(data, data.length, clientAddress, clientPort);
 
-    private static DatagramPacket getPacket() {
+	}
 
-        byte[] buffer = new byte[8192];
+	private static byte[] serializeObject(Object o) {
 
-        return new DatagramPacket(buffer, buffer.length);
+		byte[] answer = new byte[1];
 
-    }
-    private static DatagramPacket getPacket(ClientPacket packet) {
+		ByteArrayOutputStream b = new ByteArrayOutputStream();
+		ObjectOutputStream oos = null;
+		try {
+			oos = new ObjectOutputStream(b);
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		try {
+			oos.writeObject(o);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		answer = b.toByteArray();
 
+		try {
+			oos.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			b.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-        byte[] data = serializeObject(packet);
+		return answer;
 
-        try {
-            return new DatagramPacket(data, data.length, InetAddress.getByName(address), port);
-        } catch (UnknownHostException e) {
-            return null;
-        }
+	}
 
-    }
-    private static byte[] serializeObject(Object o) {
+	private static Object deserializeBytes(byte[] data) {
 
-        byte[] answer = new byte[1];
+		Object answer = null;
+		ByteArrayInputStream b = new ByteArrayInputStream(data);
+		ObjectInputStream o = null;
+		try {
+			o = new ObjectInputStream(b);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			answer = o.readObject();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			b.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			o.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return answer;
 
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        ObjectOutputStream oos = null;
-        try {
-            oos = new ObjectOutputStream(b);
-        } catch (IOException e2) {
-            // TODO Auto-generated catch block
-            e2.printStackTrace();
-        }
-        try {
-            oos.writeObject(o);
-        } catch (IOException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
-        answer = b.toByteArray();
-
-        try {
-            oos.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        try {
-            b.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        return answer;
-
-    }
-
-    private static Object deserializeBytes(byte[] data) {
-
-        Object answer = null;
-        ByteArrayInputStream b = new ByteArrayInputStream(data);
-        ObjectInputStream o = null;
-        try {
-            o = new ObjectInputStream(b);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        try {
-            answer = o.readObject();
-        } catch (ClassNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        try {
-            b.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        try {
-            o.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return answer;
-
-    }
+	}
 }
