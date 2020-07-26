@@ -7,23 +7,27 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 public class PacketHandler {
-	private HashMap<ClientKey, ClientHandler> addressBook;
+	private static HashMap<ClientKey, ClientHandler> addressBook;
 //    private LinkedList<InetAddress> phonebook;
-	private DatagramSocket socket;
-	private final int PORT_NUMBER = 25565;
+	private static DatagramSocket socket;
+	private static final int PORT_NUMBER = 25565;
 
-	public PacketHandler() {
-		addressBook = new HashMap<>();
+	static{
+		addressBook = new HashMap<ClientKey, ClientHandler>();
 		try {
 			socket = new DatagramSocket(PORT_NUMBER);
 		} catch (SocketException e) {
 			LogHandler.write("Something went wrong when initializing the socket");
 			e.printStackTrace();
 		}
-
+		startReceiving();
 	}
+//	public PacketHandler() {
+//
+//
+//	}
 
-	private void startReceiving() {
+	private static void startReceiving() {
 
 		new Thread(new Runnable() {
 
@@ -93,7 +97,7 @@ public class PacketHandler {
 //		}).start();
 //	}
 
-	private void sendPacket(DatagramPacket packet) {
+	public static void sendPacket(DatagramPacket packet) {
 
 		try {
 			socket.send(packet);

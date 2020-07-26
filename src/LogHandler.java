@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.Socket;
@@ -11,6 +12,8 @@ public class LogHandler
 		try 
 		{
 			writer = new FileWriter("res\\Logs\\ClientLog.txt");
+
+
 		} 
 		catch (IOException e) 
 		{
