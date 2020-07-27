@@ -3,14 +3,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
 
-/**should recieve:
-    array list of buttons pressed consisting of (w,a,s,d,up,down,left,right,)
-    mouse location
-
- **should send
-    an object containing all of the the aspects of the map(including the player)
-
- */
 public class ClientHandler {
 
 	private final ClientKey CLIENT;
@@ -36,27 +28,25 @@ public class ClientHandler {
 				
 				String[] parsedKeyCode = keyCode.split(";");
 				
-				if (parsedKeyCode[0].equals("true")) { // w
+				int trueCount = 0;
+				
+				for (int i = 0; i < parsedKeyCode.length; i++) {
 					
-					player.shiftY(MOVELENGTH);
+					if (parsedKeyCode[i].equals("true")) {
+						
+						trueCount ++;
+						
+					}
 					
 				}
 				
-				if (parsedKeyCode[1].equals("true")) { // a
+				if (trueCount == 2) {
 					
-					player.shiftX(-MOVELENGTH);
+					movePlayer((int)(MOVELENGTH / Math.sqrt(2)));
 					
-				}
-				
-				if (parsedKeyCode[2].equals("true")) { // s
+				} else {
 					
-					player.shiftY(-MOVELENGTH);
-					
-				}
-				
-				if (parsedKeyCode[3].equals("true")) { // d
-					
-					player.shiftX(MOVELENGTH);
+					movePlayer(MOVELENGTH);
 					
 				}
 				
@@ -94,6 +84,36 @@ public class ClientHandler {
 	public ClientKey getKey() {
 		
 		return CLIENT;
+		
+	}
+	
+	private void movePlayer(int shift) {
+		
+		String[] parsedKeyCode = keyCode.split(";");
+		
+		if (parsedKeyCode[0].equals("true")) { // w
+			
+			player.shiftY(shift);
+			
+		}
+		
+		if (parsedKeyCode[1].equals("true")) { // a
+			
+			player.shiftX(-shift);
+			
+		}
+		
+		if (parsedKeyCode[2].equals("true")) { // s
+			
+			player.shiftY(-shift);
+			
+		}
+		
+		if (parsedKeyCode[3].equals("true")) { // d
+			
+			player.shiftX(shift);
+			
+		}
 		
 	}
 	
