@@ -1,18 +1,15 @@
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.Socket;
 import java.time.LocalDateTime;
 
 public class LogHandler 
 {
-	static FileWriter writer;
+	private static FileWriter writer;
 	static 
 	{
 		try 
 		{
-			writer = new FileWriter("res\\Logs\\ClientLog.txt");
-
+			writer = new FileWriter("res/Logs/ClientLog.txt");
 
 		} 
 		catch (IOException e) 
@@ -26,6 +23,7 @@ public class LogHandler
 		try 
 		{
 			writer.write(String.format("[%s] %s\n", LocalDateTime.now(), text));
+			writer.flush();
 		}
 		catch (IOException e) 
 		{
@@ -33,11 +31,12 @@ public class LogHandler
 		}
 	}
 	
-	public static void write (String text, Socket socket)
+	public static void write (String text, String address)
 	{
 		try 
 		{
-			writer.write(String.format("[%s] {%s} %s\n ", LocalDateTime.now(), socket.getInetAddress(), text));
+			writer.write(String.format("[%s] {%s} %s\n", LocalDateTime.now(), address, text));
+			writer.flush();
 		}
 		catch (IOException e) 
 		{

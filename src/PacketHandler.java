@@ -1,14 +1,9 @@
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.*;
 import java.util.HashMap;
-import java.util.LinkedList;
 
 public class PacketHandler {
 	private static HashMap<ClientKey, ClientHandler> addressBook;
-//    private LinkedList<InetAddress> phonebook;
 	private static DatagramSocket socket;
 	private static final int PORT_NUMBER = 25565;
 
@@ -22,10 +17,6 @@ public class PacketHandler {
 		}
 		startReceiving();
 	}
-//	public PacketHandler() {
-//
-//
-//	}
 
 	private static void startReceiving() {
 
@@ -69,33 +60,6 @@ public class PacketHandler {
 
 	}
 
-//	private void startSending() {
-//
-//		new Thread(new Runnable() {
-//
-//			@Override
-//			public void run() {
-//				Timer timer = new Timer(1000 / 60, new ActionListener() {
-//					@Override
-//					public void actionPerformed(ActionEvent e) {
-//
-//						ClientKey[] addressArray = (ClientKey[]) addressBook.keySet().toArray();
-//
-//						for (int i = 0; i < addressBook.size(); i++) {
-//
-//							DatagramPacket data = addressBook.get(addressArray[i]).getPacket();
-//
-//							sendPacket(data);
-//
-//						}
-//
-//					}
-//				});
-//				timer.start();
-//			}
-//
-//		}).start();
-//	}
 
 	public static void sendPacket(DatagramPacket packet) {
 
@@ -116,7 +80,7 @@ public class PacketHandler {
 
 	}
 
-	private static DatagramPacket getPacket(ClientPacket packet, InetAddress clientAddress, int clientPort) {
+	public static DatagramPacket getPacket(ClientPacket packet, InetAddress clientAddress, int clientPort) {
 
 		byte[] data = serializeObject(packet);
 

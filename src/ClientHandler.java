@@ -21,6 +21,8 @@ public class ClientHandler {
 	
 	private Player player;
 	
+	private final int MOVELENGTH = 10;
+	
 	private Timer move = new Timer(1000/60, new ActionListener() {
 
 		@Override
@@ -36,25 +38,25 @@ public class ClientHandler {
 				
 				if (parsedKeyCode[0].equals("true")) { // w
 					
-					
+					player.shiftY(MOVELENGTH);
 					
 				}
 				
 				if (parsedKeyCode[1].equals("true")) { // a
 					
-					
+					player.shiftX(-MOVELENGTH);
 					
 				}
 				
 				if (parsedKeyCode[2].equals("true")) { // s
 					
-					
+					player.shiftY(-MOVELENGTH);
 					
 				}
 				
 				if (parsedKeyCode[3].equals("true")) { // d
 					
-					
+					player.shiftX(MOVELENGTH);
 					
 				}
 				
@@ -69,7 +71,7 @@ public class ClientHandler {
 		
 		CLIENT = key;
 		
-		player = genPlayer();
+		player = new Player(0, 0);
 		
 	}
 
@@ -83,10 +85,15 @@ public class ClientHandler {
 		
 	}
 	
-	// Should generate a player in a valid position (
-	private Player genPlayer() {
+	public Player getPlayer() {
 		
-		return null;
+		return player;
+		
+	}
+	
+	public ClientKey getKey() {
+		
+		return CLIENT;
 		
 	}
 	

@@ -48,5 +48,17 @@ public class Player {
 		return y;
 		
 	}
+	
+	public void shiftX(int shift) {
+		
+		x += shift;
+		
+	}
+	
+	public void shiftY(int shift) {
+		
+		y += shift;
+		
+	}
 
 }
