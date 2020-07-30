@@ -59,7 +59,7 @@ public class Map implements Serializable {
 	
 	public void addPlayerData(Player p) {
 		
-		int chunkNum = getChunkNum(p.getX(), p.getY());
+		int chunkNum = getChunkNum(getChunkColumn(p.getX()), getChunkRow(p.getY()));
 		
 		playerMap.get(chunkNum).add(p);
 		
@@ -67,11 +67,11 @@ public class Map implements Serializable {
 	
 	public void updatePlayerData(Player oldP, Player p) {
 		
-		int chunkNum = getChunkNum(oldP.getX(), oldP.getY());
+		int chunkNum = getChunkNum(getChunkColumn(oldP.getX()), getChunkRow(oldP.getY()));
 		
 		playerMap.get(chunkNum).remove(oldP);
 		
-		chunkNum = getChunkNum(p.getX(), p.getY());
+		chunkNum = getChunkNum(getChunkColumn(p.getX()), getChunkRow(p.getY()));
 		
 		playerMap.get(chunkNum).add(p);
 		
