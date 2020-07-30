@@ -1,3 +1,4 @@
+import java.awt.Polygon;
 
 public class Obstacle {
 	
@@ -20,6 +21,12 @@ public class Obstacle {
 	public int getY() {
 		
 		return Y;
+		
+	}
+	
+	public Polygon getCollider() {
+		
+		return null;
 		
 	}
 
