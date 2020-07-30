@@ -1,11 +1,8 @@
 
 public class DataHandler {
 	
-	static {
-		
-		
-		
-	}
+	private Map gameMap = new Map("DefaultMap.txt");;
+	
 	
 	
 

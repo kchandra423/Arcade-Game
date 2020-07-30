@@ -57,11 +57,11 @@ public class ClientHandler {
 	});
 
 	
-	public ClientHandler(ClientKey key) {
+	public ClientHandler(ClientKey key, int pNum) {
 		
 		CLIENT = key;
 		
-		player = new Player(0, 0);
+		player = new Player(0, 0, pNum);
 		
 	}
 

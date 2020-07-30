@@ -20,6 +20,7 @@ public class Map implements Serializable {
 	private final int MAPHEIGHT = CHUNKHEIGHT * FACTOR;
 	
 	private HashMap<Integer, ArrayList<Obstacle>> dataMap = new HashMap<Integer, ArrayList<Obstacle>>();
+	private HashMap<Integer, ArrayList<Player>> playerMap = new HashMap<Integer, ArrayList<Player>>();
 	
 	public Map(String fileName) {
 		
@@ -56,6 +57,58 @@ public class Map implements Serializable {
 		
 	}
 	
+	public void addPlayerData(Player p) {
+		
+		int chunkNum = getChunkNum(p.getX(), p.getY());
+		
+		playerMap.get(chunkNum).add(p);
+		
+	}
+	
+	public void updatePlayerData(Player oldP, Player p) {
+		
+		int chunkNum = getChunkNum(oldP.getX(), oldP.getY());
+		
+		playerMap.get(chunkNum).remove(oldP);
+		
+		chunkNum = getChunkNum(p.getX(), p.getY());
+		
+		playerMap.get(chunkNum).add(p);
+		
+	}
+	
+	public ArrayList<Player> getAllPlayerChunks(int x, int y) {
+		
+		int chunkColumn = getChunkColumn(x);
+		int chunkRow = getChunkRow(y);
+		
+		ArrayList<Player> data = new ArrayList<Player>();
+		
+		int [] nums = {0, 1, -1, 0, 0, 1, 1, -1, -1};
+		int [] nums2 = {0, 0, 0, 1, -1, 1, -1, 1, -1};
+		
+		Rectangle perspective = new Rectangle(x - CHUNKWIDTH / 2, y - CHUNKHEIGHT / 2, CHUNKWIDTH, CHUNKHEIGHT);
+		
+		for (int k = 0; k < nums.length; k ++) {
+			
+			for (Player i : getPlayerChunkData(chunkColumn + nums[k], chunkRow + nums2[k])) {
+				
+				if (i == null) {
+					break;
+				}
+				
+				if (i.getCollider().intersects(perspective)) {
+					data.add(i);
+				}
+				
+			}
+		
+		}
+		
+		return data;
+		
+	}
+	
 	public ArrayList<Obstacle> getAllChunks(int x, int y) {
 		
 		int chunkColumn = getChunkColumn(x);
@@ -85,6 +138,22 @@ public class Map implements Serializable {
 		}
 		
 		return data;
+		
+	}
+	
+	private ArrayList<Player> getPlayerChunkData(int chunkColumn, int chunkRow) {
+		
+		int chunkNum = getChunkNum(chunkColumn, chunkRow);
+		
+		if (playerMap.containsKey(chunkNum)) {
+			
+			return playerMap.get(chunkNum);
+			
+		} else {
+			
+			return null;
+			
+		}
 		
 	}
 	

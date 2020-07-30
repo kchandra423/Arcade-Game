@@ -6,6 +6,7 @@ public class PacketHandler {
 	private static HashMap<ClientKey, ClientHandler> addressBook;
 	private static DatagramSocket socket;
 	private static final int PORT_NUMBER = 25565;
+	private static int playerCount = 0;
 
 	static{
 		addressBook = new HashMap<ClientKey, ClientHandler>();
@@ -38,7 +39,8 @@ public class PacketHandler {
 
 						if (!addressBook.containsKey(key)) {
 
-							ClientHandler handler = new ClientHandler(key);
+							ClientHandler handler = new ClientHandler(key, playerCount);
+							playerCount ++;
 							addressBook.put(key, handler);
 
 						}
