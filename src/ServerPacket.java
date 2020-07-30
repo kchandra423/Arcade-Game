@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class ServerPacket implements Serializable {
 	
-	private final Map GAMEMAP;
+	private final ArrayList<Obstacle> OBSTACLES;
 	
 	private final ArrayList<Player> PLAYERS;
 	
@@ -13,18 +13,18 @@ public class ServerPacket implements Serializable {
 
 	private static final long serialVersionUID = 9108779363102530646L;
 	
-	public ServerPacket(Map theMap, ArrayList<Player> allOtherPlayers, Player mainPlayer, int packetNumber) {
+	public ServerPacket(ArrayList<Obstacle> obstacles, ArrayList<Player> allOtherPlayers, Player mainPlayer, int packetNumber) {
 		
 		this.MAINPLAYER = mainPlayer;
 		PLAYERS = allOtherPlayers;
-		GAMEMAP = theMap;
+		OBSTACLES = obstacles;
 		PACKETNUM = packetNumber;
 		
 	}
 	
-	public Map getMap() {
+	public ArrayList<Obstacle> getObstacles() {
 		
-		return GAMEMAP;
+		return OBSTACLES;
 		
 	}
 	
@@ -34,7 +34,7 @@ public class ServerPacket implements Serializable {
 		
 	}
 	
-	public ArrayList<Player> getAllOtherPlayers(){
+	public ArrayList<Player> getAllOtherPlayers() {
 		
 		return PLAYERS;
 		

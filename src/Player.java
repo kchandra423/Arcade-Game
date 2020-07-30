@@ -64,6 +64,12 @@ public class Player {
 		
 	}
 	
+	public int getPNum() {
+		
+		return PNUM;
+		
+	}
+	
 	public Rectangle getCollider() {
 		
 		return new Rectangle(x, y, width, width);

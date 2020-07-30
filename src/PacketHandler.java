@@ -63,10 +63,12 @@ public class PacketHandler {
 	}
 
 
-	public static void sendPacket(DatagramPacket packet) {
+	public static void sendPacket(ServerPacket packet, ClientKey key) {
 
+		DatagramPacket dgPacket = getPacket(packet, key);
+		
 		try {
-			socket.send(packet);
+			socket.send(dgPacket);
 		} catch (IOException e) {
 			LogHandler.write("Something went wrong sending a packet");
 			e.printStackTrace();
@@ -82,11 +84,11 @@ public class PacketHandler {
 
 	}
 
-	public static DatagramPacket getPacket(ClientPacket packet, InetAddress clientAddress, int clientPort) {
+	private static DatagramPacket getPacket(ServerPacket packet, ClientKey key) {
 
 		byte[] data = serializeObject(packet);
 
-		return new DatagramPacket(data, data.length, clientAddress, clientPort);
+		return new DatagramPacket(data, data.length, key.getAddress(), key.getPort());
 
 	}
 

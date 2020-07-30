@@ -77,7 +77,10 @@ public class Map implements Serializable {
 		
 	}
 	
-	public ArrayList<Player> getAllPlayerChunks(int x, int y) {
+	public ArrayList<Player> getAllPlayerChunks(Player p) {
+		
+		int x = p.getX();
+		int y = p.getY();
 		
 		int chunkColumn = getChunkColumn(x);
 		int chunkRow = getChunkRow(y);
