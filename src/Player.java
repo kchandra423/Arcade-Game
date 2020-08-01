@@ -1,8 +1,13 @@
 import java.awt.Rectangle;
 
+/*
+
+This class represents a player and is used to store the data about any one player.
+
+*/
+
 public class Player {
 	
-	private boolean mainPlayer = false;
 	private int x;
 	private int y;
 	private final int PNUM;
@@ -16,66 +21,64 @@ public class Player {
 		
 	}
 	
+	// This method returns a clone of this player 
 	public Player clone() {
 		
 		return new Player(x, y, PNUM);
 		
 	}
 	
-	public void setAsMainPlayer() {
-		
-		mainPlayer = true;
-		
-	}
-	
-	public boolean isMainPlayer() {
-		
-		return mainPlayer;
-		
-	}
-	
+	// This method returns the width of the player
 	public int getWidth() {
 		
 		return width;
 		
 	}
 	
+	// This method returns the x coordinate of the player
 	public int getX() {
 		
 		return x;
 		
 	}
 	
+	// This method returns the y coordinate of the player
 	public int getY() {
 		
 		return y;
 		
 	}
 	
+	// This method shifts the player's x coordinate by the given shift amount
 	public void shiftX(int shift) {
 		
 		x += shift;
 		
 	}
 	
+	// This method shifts the player's y coordinate by the given shift amount
 	public void shiftY(int shift) {
 		
 		y += shift;
 		
 	}
 	
+	// This method returns the player number of this player
 	public int getPNum() {
 		
 		return PNUM;
 		
 	}
 	
+	// This method returns the outlining rectangle of this player
 	public Rectangle getCollider() {
 		
 		return new Rectangle(x, y, width, width);
 		
 	}
 
+	// These two methods are overridden so the methods called on a HashMap would work
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

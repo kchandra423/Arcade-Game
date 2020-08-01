@@ -7,19 +7,32 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
+/*
+
+This class holds all the data for anything that is on the game map. This includes both obstacles and
+players. It performs the all of the calculations needed to find things nearby to a given player.
+
+*/
+
 public class Map implements Serializable {
 
 	private static final long serialVersionUID = -3247302376139655273L;
 	
-	private final int CHUNKWIDTH = 1400;
-	private final int CHUNKHEIGHT = 800;
+	private final static int CHUNKWIDTH = 1400; // The width of one chunk (should be the width of the 
+												// screen)
+	private final static int CHUNKHEIGHT = 800; // The height of one chunk (should be the height of the 
+	// screen)
 	
-	private final int FACTOR = 4;
+	private final static int FACTOR = 4; // How rows/columns of chunks are in the map
 	
-	private final int MAPWIDTH = CHUNKWIDTH * FACTOR;
-	private final int MAPHEIGHT = CHUNKHEIGHT * FACTOR;
+	private final static int MAPWIDTH = CHUNKWIDTH * FACTOR; // The width of the entire map
+	private final static int MAPHEIGHT = CHUNKHEIGHT * FACTOR; // The height of the entire map
 	
+	// The HashMap that holds the data for all the obstacles in the game corresponding to the chunks
+	// they are in
 	private HashMap<Integer, ArrayList<Obstacle>> dataMap = new HashMap<Integer, ArrayList<Obstacle>>();
+	// The HashMap that holds all of the players that are in the game corresponding to the chunk they
+	// are in
 	private HashMap<Integer, ArrayList<Player>> playerMap = new HashMap<Integer, ArrayList<Player>>();
 	
 	public Map(String fileName) {
@@ -31,7 +44,8 @@ public class Map implements Serializable {
 			e.printStackTrace();
 		}
 		
-		while (sc.hasNextLine()) {
+		while (sc.hasNextLine()) { // Reads through all the lines of the Map data file and stores all
+								   // the data that is needed for a map
 			
 			
 			
@@ -39,24 +53,28 @@ public class Map implements Serializable {
 		
 	}
 	
+	// This method returns the background color of this map
 	public Color getBackgroundColor() {
 		
 		return null;
 		
 	}
 	
-	public int getMapWidth() {
+	// This method returns the width of the entire map
+	public static int getMapWidth() {
 		
 		return MAPWIDTH;
 		
 	}
 	
-	public int getMapHeight() {
+	// This method returns the width of the entire map
+	public static int getMapHeight() {
 		
 		return MAPHEIGHT;
 		
 	}
 	
+	// This method adds the data for a new player to the player HashMap
 	public void addPlayerData(Player p) {
 		
 		int chunkNum = getChunkNum(getChunkColumn(p.getX()), getChunkRow(p.getY()));
@@ -65,6 +83,7 @@ public class Map implements Serializable {
 		
 	}
 	
+	// This method updates the data for an existing player to the player HashMap
 	public void updatePlayerData(Player oldP, Player p) {
 		
 		int chunkNum = getChunkNum(getChunkColumn(oldP.getX()), getChunkRow(oldP.getY()));
@@ -77,6 +96,7 @@ public class Map implements Serializable {
 		
 	}
 	
+	// This method returns all the players that are in the perspective of the given player
 	public ArrayList<Player> getAllPlayerChunks(Player p) {
 		
 		int x = p.getX();
@@ -112,7 +132,11 @@ public class Map implements Serializable {
 		
 	}
 	
-	public ArrayList<Obstacle> getAllChunks(int x, int y) {
+	// This method returns all of the obstacles in the perspective of the given player
+	public ArrayList<Obstacle> getAllChunks(Player p) {
+		
+		int x = p.getX();
+		int y = p.getY();
 		
 		int chunkColumn = getChunkColumn(x);
 		int chunkRow = getChunkRow(y);
@@ -144,6 +168,8 @@ public class Map implements Serializable {
 		
 	}
 	
+	// This method is a helper method for the getAllPlayerChunks method and returns all the players in
+	// a given chunk
 	private ArrayList<Player> getPlayerChunkData(int chunkColumn, int chunkRow) {
 		
 		int chunkNum = getChunkNum(chunkColumn, chunkRow);
@@ -160,6 +186,8 @@ public class Map implements Serializable {
 		
 	}
 	
+	// This method is a helper method for the getAllChunks method and returns all the obstacles in a
+	// given chunk
 	private ArrayList<Obstacle> getChunkData(int chunkColumn, int chunkRow) {
 		
 		int chunkNum = getChunkNum(chunkColumn, chunkRow);
@@ -176,24 +204,32 @@ public class Map implements Serializable {
 		
 	}
 	
+	// This method is a helper method which calculates the column number for a chunk given an x
+	// coordinate
 	private int getChunkColumn(int x) {
 		
 		return (int)Math.ceil(x / (double)CHUNKWIDTH);
 		
 	}
 	
+	// This method is a helper method which calculates the row number for a chunk given a y coordinate
 	private int getChunkRow(int y) {
 		
 		return (int)Math.ceil(y / (double)CHUNKHEIGHT);
 		
 	}
 	
+	// This method is a helper method which returns the chunk number given the column and row for a 
+	// chunk
 	private int getChunkNum(int col, int row) {
 		
 		return ((row - 1) * (MAPWIDTH / CHUNKWIDTH)) + col;
 		
 	}
 	
+	// This method is a helper method for the getChunkData method and returns a "null" chunk if the 
+	// chunk requested is not in the map. This is used because when a player reaches the end of the 
+	// map they will request a non-existing chunk in which case this method will be called
 	private ArrayList<Obstacle> getNullChunk(int chunkColumn, int chunkRow) {
 		
 		ArrayList<Obstacle> temp = new ArrayList<Obstacle>();

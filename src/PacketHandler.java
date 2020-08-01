@@ -2,13 +2,23 @@ import java.io.*;
 import java.net.*;
 import java.util.HashMap;
 
-public class PacketHandler {
-	private static HashMap<ClientKey, ClientHandler> addressBook;
-	private static DatagramSocket socket;
-	private static final int PORT_NUMBER = 25565;
-	private static int playerCount = 0;
+/*
 
-	static{
+This class is a "static" class which is used to send an receive data on the server's port.
+
+*/
+
+public class PacketHandler {
+	
+	private static HashMap<ClientKey, ClientHandler> addressBook; // A HashMap which contains all the 
+																  // ClientHandlers mapped to a 
+																  // ClientKey
+	private static DatagramSocket socket; // The socket for the server side
+	private static final int PORT_NUMBER = 25565; // The port the socket is attached to
+	private static int playerCount = 0; // The total number of connected players, also used to assign
+										// player numbers
+
+	static {
 		addressBook = new HashMap<ClientKey, ClientHandler>();
 		try {
 			socket = new DatagramSocket(PORT_NUMBER);
@@ -19,6 +29,8 @@ public class PacketHandler {
 		startReceiving();
 	}
 
+	// This method starts the receiving thread which is the thread that receives all data and then 
+	// sends it to the appropriate ClientHandler
 	private static void startReceiving() {
 
 		new Thread(new Runnable() {
@@ -62,7 +74,7 @@ public class PacketHandler {
 
 	}
 
-
+	// This method sends a packet to a given client
 	public static void sendPacket(ServerPacket packet, ClientKey key) {
 
 		DatagramPacket dgPacket = getPacket(packet, key);
@@ -76,6 +88,8 @@ public class PacketHandler {
 
 	}
 
+	// This method is a helper method used to generate blank packets which are used to write data into from 
+	// the receiver thread
 	private static DatagramPacket getPacket() {
 
 		byte[] buffer = new byte[8192];
@@ -84,6 +98,8 @@ public class PacketHandler {
 
 	}
 
+	// This method is a helper method used to get a DatagramPacket which can be sent to the client 
+	// given a ServerPacket and ClientKey
 	private static DatagramPacket getPacket(ServerPacket packet, ClientKey key) {
 
 		byte[] data = serializeObject(packet);
@@ -92,6 +108,7 @@ public class PacketHandler {
 
 	}
 
+	// This method is a helper method used to serialize an object into a byte array
 	private static byte[] serializeObject(Object o) {
 
 		byte[] answer = new byte[1];
@@ -129,6 +146,7 @@ public class PacketHandler {
 
 	}
 
+	// This method is a helper method used to deserialize a byte array into an Object
 	private static Object deserializeBytes(byte[] data) {
 
 		Object answer = null;

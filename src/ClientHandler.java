@@ -3,19 +3,35 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
 
+/*
+ 
+	This class handles an individual client that connects to the server and manages the updates
+	received from the client and send the needed updates to the client as well. The main purpose of 
+	this class is to handle the movement and positioning of each client.
+ 
+*/
+
 public class ClientHandler {
 
-	private final ClientKey CLIENT;
+	private final ClientKey CLIENT; // Holds the address and port to the client
 	
-	private String keyCode = "false;false;false;false"; // w;a;s;d
+	private String keyCode = "false;false;false;false"; // w;a;s;d, the key code will come from the 
+														// client and tells the server which keys are
+														// being pressed
 	
-	private final String FALSECODE = "false;false;false;false";
+	private final String FALSECODE = "false;false;false;false"; // This is just a variable that 
+																// represents the keys when nothing 
+																// is being pressed
 	
-	private Player player;
+	private final Player player; // This is the player object that holds the positioning data for the 
+						   		 // client's player
 	
-	private final int MOVELENGTH = 10;
+	private final int MOVELENGTH = 10; // This is how many pixels the player will move every frame
 	
-	private Timer move = new Timer(1000/60, new ActionListener() {
+	private Timer move = new Timer(1000/60, new ActionListener() { // This timer will run almost all
+																   // the time (look at the code for
+																   // when it stops) and will move the
+																   // player
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -61,10 +77,14 @@ public class ClientHandler {
 		
 		CLIENT = key;
 		
-		player = new Player(0, 0, pNum);
+		player = new Player(Map.getMapWidth() / 2, Map.getMapHeight() / 2, pNum); // Makes the player
+																				  // at the center of
+																				  // the screen
 		
 	}
 
+	// This method should take a ClientPacket, extract all the data from it and call actions based on
+	// the data received
 	public void loadPacket(ClientPacket packet) {
 		
 		keyCode = packet.getKeyCode();
@@ -75,18 +95,21 @@ public class ClientHandler {
 		
 	}
 	
+	// This method returns the player that is handled by this ClientHandler
 	public Player getPlayer() {
 		
 		return player;
 		
 	}
 	
+	// This method returns the ClientKey that was assigned to the ClientHandler on instantiation
 	public ClientKey getKey() {
 		
 		return CLIENT;
 		
 	}
 	
+	// This method moves the player a given amount (the value of "shift")
 	private void movePlayer(int shift) {
 		
 		String[] parsedKeyCode = keyCode.split(";");
