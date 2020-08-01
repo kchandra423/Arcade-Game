@@ -15,16 +15,24 @@ public class ServerPacket implements Serializable {
 	
 	private final Player MAINPLAYER;
 	
-	private final int PACKETNUM;
+//	private final int PACKETNUM;
 
 	private static final long serialVersionUID = 9108779363102530646L;
 	
-	public ServerPacket(ArrayList<Obstacle> obstacles, ArrayList<Player> allOtherPlayers, Player mainPlayer, int packetNumber) {
+//	public ServerPacket(ArrayList<Obstacle> obstacles, ArrayList<Player> allOtherPlayers, Player mainPlayer, int packetNumber) {
+//		
+//		this.MAINPLAYER = mainPlayer;
+//		PLAYERS = allOtherPlayers;
+//		OBSTACLES = obstacles;
+//		PACKETNUM = packetNumber;
+//		
+//	}
+	
+	public ServerPacket(ArrayList<Obstacle> obstacles, ArrayList<Player> allOtherPlayers, Player mainPlayer) {
 		
 		this.MAINPLAYER = mainPlayer;
 		PLAYERS = allOtherPlayers;
 		OBSTACLES = obstacles;
-		PACKETNUM = packetNumber;
 		
 	}
 	
@@ -50,11 +58,11 @@ public class ServerPacket implements Serializable {
 	}
 	
 	// This method returns the packet number of this specific ServerPacket. The packet number is used
-	// to tell whether or not a packet has been lost.
-	public int getPacketNumber() {
-		
-		return PACKETNUM;
-		
-	}
+	// to tell whether or not a packet has been lost. (Not yet implemented on server side)
+//	public int getPacketNumber() {
+//		
+//		return PACKETNUM;
+//		
+//	}
 
 }

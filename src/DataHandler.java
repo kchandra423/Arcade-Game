@@ -26,10 +26,23 @@ public class DataHandler {
 																						 // player 
 																						 // numbers
 	
+	private static HashMap<Player, ClientKey> keyMap = new HashMap<Player, ClientKey>(); // A HashMap
+																						 // which 
+																						 // contains 
+	 																					 // all 
+	 																					 // client
+	 																					 // keys
+	 																					 // sorted by
+	 																					 // their 
+	 																					 // players
+	
+	
+	
 	// This method adds a new player to the data list of all players currently in the game
-	public void addPlayer(Player p) {
+	public void addPlayer(Player p, ClientKey key) {
 		
 		allPlayers.put(p.getPNum(), p);
+		keyMap.put(p, key);
 		gameMap.addPlayerData(p);
 		
 		ArrayList<Player> sendPlayers = gameMap.getAllPlayerChunks(p); // This includes the main player (p)
@@ -46,7 +59,7 @@ public class DataHandler {
 	public void updatePlayer(Player p) {
 		
 		gameMap.updatePlayerData(allPlayers.get(p.getPNum()), p);
-		allPlayers.put(p.getPNum(), p);
+		allPlayers.replace(p.getPNum(), p);
 		
 		ArrayList<Player> sendPlayers = gameMap.getAllPlayerChunks(p);
 		
@@ -62,8 +75,9 @@ public class DataHandler {
 	// the updated information in it through the PacketHandler
 	private void sendPlayerUpdate(Player p) {
 		
-		// Call PacketHandler here, the only thing missing is the ClientKey corresponding to the Player
-		// so we need to figure that out somehow
+		ServerPacket sendPacket = new ServerPacket(gameMap.getAllChunks(p), gameMap.getAllPlayerChunks(p), p);
+		
+		PacketHandler.sendPacket(sendPacket, keyMap.get(p));
 		
 	}
 
