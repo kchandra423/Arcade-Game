@@ -6,6 +6,17 @@ This class is used to hold all the data the client will send in one object so da
 easier and more organized.
 
 */
+/* Keycode Abbreviations (saves on memory~ish)
+	 * RP --> right pressed
+	 * RR --> right released
+	 * UP --> up pressed
+	 * UR --> up released
+	 * LP --> left pressed
+	 * LR --> left released
+	 * DP --> down pressed
+	 * DR --> down released
+*/
+	
 
 public class ClientPacket implements Serializable {
 
@@ -14,11 +25,11 @@ public class ClientPacket implements Serializable {
 	private final String KEYCODE; // The key code that represents which keys are being pressed on the 
 								  // client side
 	
-	private final int MOUSEANGLE; // The angle of the mouse in relation to the center of the screen on
+	private final double MOUSEANGLE; // The angle of the mouse in relation to the center of the screen on
 								  // the client side
 	
 	
-	public ClientPacket(String keyCode, int mouseAngle) {
+	public ClientPacket(String keyCode, double mouseAngle) {
 		
 		KEYCODE = keyCode;
 		MOUSEANGLE = mouseAngle;
@@ -33,7 +44,7 @@ public class ClientPacket implements Serializable {
 	}
 	
 	// This method returns the mouse angle that was given on instantiation
-	public int getMouseAngle() {
+	public double getMouseAngle() {
 		
 		return MOUSEANGLE;
 		
