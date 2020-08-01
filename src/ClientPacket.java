@@ -6,16 +6,7 @@ This class is used to hold all the data the client will send in one object so da
 easier and more organized.
 
 */
-/* Keycode Abbreviations (saves on memory~ish)
-	 * RP --> right pressed
-	 * RR --> right released
-	 * UP --> up pressed
-	 * UR --> up released
-	 * LP --> left pressed
-	 * LR --> left released
-	 * DP --> down pressed
-	 * DR --> down released
-*/
+
 	
 
 public class ClientPacket implements Serializable {
