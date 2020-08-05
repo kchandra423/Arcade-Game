@@ -1,5 +1,6 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.DatagramPacket;
 
 import javax.swing.Timer;
 
@@ -137,7 +138,9 @@ public class ClientHandler {
 			player.shiftX(shift);
 			
 		}
-		
+		if (shift>0){
+			DataHandler.updatePlayer(player);
+		}
 	}
 	
 }

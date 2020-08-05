@@ -39,7 +39,7 @@ public class DataHandler {
 	
 	
 	// This method adds a new player to the data list of all players currently in the game
-	public void addPlayer(Player p, ClientKey key) {
+	public static void addPlayer(Player p, ClientKey key) {
 		
 		allPlayers.put(p.getPNum(), p);
 		keyMap.put(p, key);
@@ -56,7 +56,7 @@ public class DataHandler {
 	}
 	
 	// This method updates the location/state of a player that is already in the game
-	public void updatePlayer(Player p) {
+	public static void updatePlayer(Player p) {
 		
 		gameMap.updatePlayerData(allPlayers.get(p.getPNum()), p);
 		allPlayers.replace(p.getPNum(), p);
@@ -73,7 +73,7 @@ public class DataHandler {
 	
 	// This method gets the corresponding ClientKey for the player and sends a ServerPacket with all 
 	// the updated information in it through the PacketHandler
-	private void sendPlayerUpdate(Player p) {
+	private static void sendPlayerUpdate(Player p) {
 		
 		ServerPacket sendPacket = new ServerPacket(gameMap.getAllChunks(p), gameMap.getAllPlayerChunks(p), p);
 		
