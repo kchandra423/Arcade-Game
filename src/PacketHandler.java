@@ -23,7 +23,8 @@ public class PacketHandler {
 		try {
 			socket = new DatagramSocket(PORT_NUMBER);
 		} catch (SocketException e) {
-			LogHandler.write("Something went wrong when initializing the socket");
+			LogHandler.write("(Packet Handler) Something went wrong when initializing the socket, " +
+					"exact error is: "+e.toString());
 			e.printStackTrace();
 		}
 		startReceiving();
@@ -62,7 +63,8 @@ public class PacketHandler {
 						addressBook.get(key).loadPacket(packet);
 
 					} catch (IOException e) {
-						LogHandler.write("Something went wrong receiving information");
+						LogHandler.write("(Packet Handler) Something went wrong receiving data, " +
+								"exact error is: "+e.toString());
 						e.printStackTrace();
 					}
 
@@ -82,7 +84,9 @@ public class PacketHandler {
 		try {
 			socket.send(dgPacket);
 		} catch (IOException e) {
-			LogHandler.write("Something went wrong sending a packet");
+			LogHandler.write("(Client handler) Something went wrong sending a packet," +
+					"exact error is: "+e.toString()+
+					" The packet was going to be sent to:"+key.getAddress().toString());
 			e.printStackTrace();
 		}
 

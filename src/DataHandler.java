@@ -44,7 +44,7 @@ public class DataHandler {
 		allPlayers.put(p.getPNum(), p);
 		keyMap.put(p, key);
 		gameMap.addPlayerData(p);
-		
+		LogHandler.write("(DataHandler) Player added: "+p.toString()+" from client: "+ key.getAddress().toString());
 		ArrayList<Player> sendPlayers = gameMap.getAllPlayerChunks(p); // This includes the main player (p)
 		
 		for (int i = 0; i < sendPlayers.size(); i ++) {
@@ -52,7 +52,7 @@ public class DataHandler {
 			sendPlayerUpdate(sendPlayers.get(i));
 			
 		}
-		
+
 	}
 	
 	// This method updates the location/state of a player that is already in the game
@@ -60,7 +60,7 @@ public class DataHandler {
 		
 		gameMap.updatePlayerData(allPlayers.get(p.getPNum()), p);
 		allPlayers.replace(p.getPNum(), p);
-		
+		LogHandler.write("(Data Handler) Player updated: "+p.toString());
 		ArrayList<Player> sendPlayers = gameMap.getAllPlayerChunks(p);
 		
 		for (int i = 0; i < sendPlayers.size(); i ++) {
@@ -68,6 +68,7 @@ public class DataHandler {
 			sendPlayerUpdate(sendPlayers.get(i));
 			
 		}
+
 		
 	}
 	
@@ -78,7 +79,7 @@ public class DataHandler {
 		ServerPacket sendPacket = new ServerPacket(gameMap.getAllChunks(p), gameMap.getAllPlayerChunks(p), p);
 		
 		PacketHandler.sendPacket(sendPacket, keyMap.get(p));
-		
+		LogHandler.write("(Data Handler) Player update sent: "+p.toString());
 	}
 
 }

@@ -80,6 +80,7 @@ public class Map implements Serializable {
 		int chunkNum = getChunkNum(getChunkColumn(p.getX()), getChunkRow(p.getY()));
 		
 		playerMap.get(chunkNum).add(p);
+		LogHandler.write("(Map) Player added");
 		
 	}
 	
@@ -93,7 +94,8 @@ public class Map implements Serializable {
 		chunkNum = getChunkNum(getChunkColumn(p.getX()), getChunkRow(p.getY()));
 		
 		playerMap.get(chunkNum).add(p);
-		
+		LogHandler.write("(Map) Player updated");
+
 	}
 	
 	// This method returns all the players that are in the perspective of the given player
