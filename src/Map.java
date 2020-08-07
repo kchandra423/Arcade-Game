@@ -114,7 +114,7 @@ public class Map implements Serializable {
 		
 		Rectangle perspective = new Rectangle(x - CHUNKWIDTH / 2, y - CHUNKHEIGHT / 2, CHUNKWIDTH, CHUNKHEIGHT);
 		
-		for (int k = 0; k < nums.length; k ++) {
+		for (int k = 0; k < xChange.length; k ++) {
 			
 			for (Player i : getPlayerChunkData(chunkColumn + xChange[k], chunkRow + yChange[k])) {
 				

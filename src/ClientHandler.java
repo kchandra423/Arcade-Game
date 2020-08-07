@@ -1,8 +1,5 @@
-import sun.rmi.runtime.Log;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.DatagramPacket;
 
 import javax.swing.Timer;
 
