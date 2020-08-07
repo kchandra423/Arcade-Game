@@ -109,14 +109,14 @@ public class Map implements Serializable {
 		
 		ArrayList<Player> data = new ArrayList<Player>();
 		
-		int [] nums = {0, 1, -1, 0, 0, 1, 1, -1, -1};
-		int [] nums2 = {0, 0, 0, 1, -1, 1, -1, 1, -1};
+		int [] xChange = {0, 1, -1, 0, 0, 1, 1, -1, -1};
+		int [] yChange = {0, 0, 0, 1, -1, 1, -1, 1, -1};
 		
 		Rectangle perspective = new Rectangle(x - CHUNKWIDTH / 2, y - CHUNKHEIGHT / 2, CHUNKWIDTH, CHUNKHEIGHT);
 		
 		for (int k = 0; k < nums.length; k ++) {
 			
-			for (Player i : getPlayerChunkData(chunkColumn + nums[k], chunkRow + nums2[k])) {
+			for (Player i : getPlayerChunkData(chunkColumn + xChange[k], chunkRow + yChange[k])) {
 				
 				if (i == null) {
 					break;
