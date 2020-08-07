@@ -31,6 +31,7 @@ public class Map implements Serializable {
 	// The HashMap that holds the data for all the obstacles in the game corresponding to the chunks
 	// they are in
 	private HashMap<Integer, ArrayList<Obstacle>> dataMap = new HashMap<Integer, ArrayList<Obstacle>>();
+	
 	// The HashMap that holds all of the players that are in the game corresponding to the chunk they
 	// are in
 	private HashMap<Integer, ArrayList<Player>> playerMap = new HashMap<Integer, ArrayList<Player>>();
@@ -88,10 +89,15 @@ public class Map implements Serializable {
 	public void updatePlayerData(Player oldP, Player p) {
 		
 		int chunkNum = getChunkNum(getChunkColumn(oldP.getX()), getChunkRow(oldP.getY()));
+		int chunkNum2 = getChunkNum(getChunkColumn(p.getX()), getChunkRow(p.getY()));
+		
+		if (chunkNum == chunkNum2) {
+			
+			return;
+			
+		}
 		
 		playerMap.get(chunkNum).remove(oldP);
-		
-		chunkNum = getChunkNum(getChunkColumn(p.getX()), getChunkRow(p.getY()));
 		
 		playerMap.get(chunkNum).add(p);
 		LogHandler.write("(Map) Player updated");

@@ -41,7 +41,7 @@ public class DataHandler {
 	// This method adds a new player to the data list of all players currently in the game
 	public static void addPlayer(Player p, ClientKey key) {
 		
-		allPlayers.put(p.getPNum(), p);
+		allPlayers.put(p.getPNum(), p.clone());
 		keyMap.put(p, key);
 		gameMap.addPlayerData(p);
 		LogHandler.write("(DataHandler) Player added: "+p.toString()+" from client: "+ key.getAddress().toString());
@@ -59,7 +59,7 @@ public class DataHandler {
 	public static void updatePlayer(Player p) {
 		
 		gameMap.updatePlayerData(allPlayers.get(p.getPNum()), p);
-		allPlayers.replace(p.getPNum(), p);
+		allPlayers.replace(p.getPNum(), p.clone());
 		LogHandler.write("(Data Handler) Player updated: "+p.toString());
 		ArrayList<Player> sendPlayers = gameMap.getAllPlayerChunks(p);
 		

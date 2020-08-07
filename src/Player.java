@@ -73,7 +73,7 @@ public class Player {
 	// This method returns the outlining rectangle of this player
 	public Rectangle getCollider() {
 		
-		return new Rectangle(x, y, width, width);
+		return new Rectangle(x - width / 2, y - width / 2, width, width);
 		
 	}
 
