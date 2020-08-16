@@ -41,7 +41,6 @@ public class ClientHandler {
 			if (keyCode.equals(FALSECODE)) {
 				
 				move.stop();
-				LogHandler.write("(Client Handler) Timer Stopped", address);
 				
 			} else {
 
@@ -94,10 +93,9 @@ public class ClientHandler {
 	public void loadPacket(ClientPacket packet) {
 		
 		keyCode = packet.getKeyCode();
-		LogHandler.write("(Client Handler) Packet Loaded, values are : "+keyCode, address);
+		LogHandler.write("(Client Handler) Packet Loaded : " + packet, address);
 		if (!move.isRunning()) {
 			move.start();
-			LogHandler.write("(Client Handler) Timer started", address);
 		}
 		
 	}
@@ -124,33 +122,34 @@ public class ClientHandler {
 		if (parsedKeyCode[0].equals("true")) { // w
 			
 			player.shiftY(shift);
-			LogHandler.write("(Client Handler) Player moved up", address);
+			LogHandler.write("(Client Handler) Player moved up by: " + shift, address);
 			
 		}
 		
 		if (parsedKeyCode[1].equals("true")) { // a
 			
 			player.shiftX(-shift);
-			LogHandler.write("(Client Handler) Player moved left", address);
+			LogHandler.write("(Client Handler) Player moved left by: " + shift, address);
 			
 		}
 		
 		if (parsedKeyCode[2].equals("true")) { // s
 			
 			player.shiftY(-shift);
-			LogHandler.write("(Client Handler) Player moved down", address);
+			LogHandler.write("(Client Handler) Player moved down by: " + shift, address);
 		}
 		
 		if (parsedKeyCode[3].equals("true")) { // d
 			
 			player.shiftX(shift);
-			LogHandler.write("(Client Handler) Player moved right", address);
+			LogHandler.write("(Client Handler) Player moved right by: " + shift, address);
 			
 		}
+		
 		if (shift>0){
 			DataHandler.updatePlayer(player);
-//			LogHandler.write("Player location updated", address);
 		}
+		
 	}
 	
 }

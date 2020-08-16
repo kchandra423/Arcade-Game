@@ -55,10 +55,13 @@ public class PacketHandler {
 							ClientHandler handler = new ClientHandler(key, playerCount);
 							playerCount ++;
 							addressBook.put(key, handler);
+							LogHandler.write("(Packet Handler) New player connected!", key.getAddress().toString());;
 
 						}
 						
 						ClientPacket packet = (ClientPacket) deserializeBytes(receive.getData());
+						
+						LogHandler.write("(Packet Handler) Packet received: " + packet, key.getAddress().toString());
 						
 						addressBook.get(key).loadPacket(packet);
 
@@ -78,11 +81,12 @@ public class PacketHandler {
 
 	// This method sends a packet to a given client
 	public static void sendPacket(ServerPacket packet, ClientKey key) {
-
+		
 		DatagramPacket dgPacket = getPacket(packet, key);
 		
 		try {
 			socket.send(dgPacket);
+			LogHandler.write("(Packet Handler) Sending packet: " + packet, key.getAddress().toString());
 		} catch (IOException e) {
 			LogHandler.write("(Client handler) Something went wrong sending a packet," +
 					"exact error is: "+e.toString()+
