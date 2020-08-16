@@ -78,22 +78,49 @@ public class PacketHandler {
 		}).start();
 
 	}
+	
+	public static void fakeReceive(ClientPacket packet, InetAddress address, int port) {
+
+		ClientKey key = new ClientKey(address, port);
+
+		if (!addressBook.containsKey(key)) {
+
+			ClientHandler handler = new ClientHandler(key, playerCount);
+			playerCount++;
+			addressBook.put(key, handler);
+			LogHandler.writeReceive("(Packet Handler) New player connected!", key.getAddress().toString());
+
+		}
+
+		LogHandler.writeReceive("(Packet Handler) Packet received: " + packet, key.getAddress().toString());
+
+		addressBook.get(key).loadPacket(packet);
+
+	}
 
 	// This method sends a packet to a given client
 	public static void sendPacket(ServerPacket packet, ClientKey key) {
 		
-		DatagramPacket dgPacket = getPacket(packet, key);
+		fakeSend(packet, key);
 		
-		try {
-			socket.send(dgPacket);
-			LogHandler.write("(Packet Handler) Sending packet: " + packet, key.getAddress().toString());
-		} catch (IOException e) {
-			LogHandler.write("(Client handler) Something went wrong sending a packet," +
-					"exact error is: "+e.toString()+
-					" The packet was going to be sent to:"+key.getAddress().toString());
-			e.printStackTrace();
-		}
+//		DatagramPacket dgPacket = getPacket(packet, key);
+//		
+//		try {
+//			socket.send(dgPacket);
+//			LogHandler.write("(Packet Handler) Sending packet: " + packet, key.getAddress().toString());
+//		} catch (IOException e) {
+//			LogHandler.write("(Client handler) Something went wrong sending a packet," +
+//					"exact error is: "+e.toString()+
+//					" The packet was going to be sent to:"+key.getAddress().toString());
+//			e.printStackTrace();
+//		}
 
+	}
+	
+	private static void fakeSend(ServerPacket packet, ClientKey key) {
+		
+		LogHandler.writeSend(packet.toString(), key.getAddress().toString());
+		
 	}
 
 	// This method is a helper method used to generate blank packets which are used to write data into from 

@@ -9,12 +9,17 @@ will come through this class to be written to the text file.
 
 */
 
-public class LogHandler 
-{
+public class LogHandler {
+	
 	private static FileWriter writer;
+	private static FileWriter writer2;
+	private static FileWriter writer3;
+	
 	static {
 		try {
-			writer = new FileWriter("res/Logs/ClientLog.txt");
+			writer = new FileWriter("res/Logs/ServerLog.txt");
+			writer2 = new FileWriter("res/Logs/ServerReceiveLog.txt");
+			writer3 = new FileWriter("res/Logs/ServerSendLog.txt");
 		} 
 		catch (IOException e) {
 			e.printStackTrace();
@@ -37,6 +42,26 @@ public class LogHandler
 		try {
 			writer.write(String.format("[%s] {%s} %s\n", LocalDateTime.now(), address, text));
 			writer.flush();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void writeSend (String text, String address) {
+		try {
+			writer3.write(String.format("[%s] {%s} %s\n", LocalDateTime.now(), address, text));
+			writer3.flush();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void writeReceive (String text, String address) {
+		try {
+			writer2.write(String.format("[%s] {%s} %s\n", LocalDateTime.now(), address, text));
+			writer2.flush();
 		}
 		catch (IOException e) {
 			e.printStackTrace();
